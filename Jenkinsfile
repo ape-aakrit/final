@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        COMPOSE_FILE = 'docker-compose.yml'
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -10,15 +14,24 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose -f docker-compose.yml build'
+                sh "docker-compose -f $COMPOSE_FILE build"
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose -f docker-compose.yml down'
-                sh 'docker-compose -f docker-compose.yml up -d'
+                sh "docker-compose -f $COMPOSE_FILE down"
+                sh "docker-compose -f $COMPOSE_FILE up -d"
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment Successful ✅'
+        }
+        failure {
+            echo 'Deployment Failed ❌'
         }
     }
 }
