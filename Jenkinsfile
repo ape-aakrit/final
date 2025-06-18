@@ -2,36 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                checkout scm
+                git 'https://github.com/ape-aakrit/NotesKube-DevOps.git'
             }
         }
 
-        stage('Build Docker Containers') {
+        stage('Build Docker Images') {
             steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yml build'
-                }
+                sh 'docker-compose -f docker-compose.yml build'
             }
         }
 
-        stage('Deploy Containers') {
+        stage('Deploy') {
             steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yml up -d'
-                }
+                sh 'docker-compose -f docker-compose.yml down'
+                sh 'docker-compose -f docker-compose.yml up -d'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
-
