@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/ape-aakrit/NotesKube-DevOps.git'
+                git 'https://github.com/ape-aakrit/final.git'
             }
         }
 
@@ -31,10 +31,10 @@ pipeline {
             sh 'docker ps -a'
         }
         success {
-            echo '✅ Deployment Successful!'
+            echo 'Deployment Successful!'
         }
         failure {
-            echo '❌ Deployment Failed. Check console output.'
+            echo 'Deployment Failed. Check console output.'
         }
     }
 }
